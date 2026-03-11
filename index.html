@@ -206,7 +206,7 @@
                 answers: ["3/5"] 
             },
             { 
-                text: "Pani w sklepie ułożyła jabłka na tackach (po 4 na każdej). Zapisz jako liczbę mieszaną, ile mamy tac z jabłkami:<br><div class='visual-emoji'>🍎🍎🍎🍎 &nbsp; 🍎🍎🍎🍎 &nbsp; 🍎⬜⬜⬜</div>", 
+                text: "Pani w sklepie ułożyła jabłka na tackach (po 4 na każdej). Zapisz jako liczbę mieszaną, ile mamy tac z jabłkami:<br><div class='visual-emoji'>🍎🍎🍎🍎 &nbsp; 🍎🍎🍎🍎 &nbsp; 🍎</div>", 
                 hint: "Mamy 2 pełne tace. Na trzeciej tacy leży 1 jabłko, a wchodzą na nią 4. Ułamek to 1/4.", 
                 answers: ["2 1/4"] 
             },
@@ -283,7 +283,7 @@
 
             // 👇 ZMIANA: Logika inteligentnego placeholder 👇
             // Sprawdza, czy pierwsza poprawna odpowiedź ma spację (liczba mieszana)
-            let placeholderText = firstAnswer.includes(' ') ? "np. 1 1/2" : "np. 3/4";
+          //  let placeholderText = firstAnswer.includes(' ') ? "np. 1 1/2" : "np. 3/4";
 
             container.innerHTML += `
                 <div class="task-card" id="card${taskNum}">
