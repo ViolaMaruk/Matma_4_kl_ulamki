@@ -283,7 +283,7 @@
 
             // 👇 ZMIANA: Logika inteligentnego placeholder 👇
             // Sprawdza, czy pierwsza poprawna odpowiedź ma spację (liczba mieszana)
-          //  let placeholderText = firstAnswer.includes(' ') ? "np. 1 1/2" : "np. 3/4";
+            let placeholderText = firstAnswer.includes(' ') ? "np. 1 1/2" : "np. 3/4";
 
             container.innerHTML += `
                 <div class="task-card" id="card${taskNum}">
