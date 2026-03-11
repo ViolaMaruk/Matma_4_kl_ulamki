@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ułamek jako część całości i liczby mieszane</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff; /* Delikatny, przyjazny niebieski tła */
+            background-size: cover; 
+            background-position: center;
+            background-attachment: fixed; 
+            background-repeat: no-repeat;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+        .header-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border-top: 5px solid #f39c12;
+        }
+        h1 {
+            text-align: center; color: #2c3e50; border-bottom: 2px solid #f39c12;
+            padding-bottom: 10px; margin-top: 0; margin-bottom: 15px;
+        }
+        .description { text-align: center; font-size: 1.1em; color: #555; margin: 0; }
+        
+        .task-card {
+            background: #fff; padding: 20px 25px; margin-bottom: 20px;
+            border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-left: 6px solid #f39c12; transition: all 0.3s;
+        }
+        .task-card.correct-bg { background-color: #d4edda; border-left-color: #28a745; }
+        .task-card.incorrect-bg { background-color: #f8d7da; border-left-color: #dc3545; }
+        .task-text { font-size: 1.1em; margin-bottom: 15px; }
+        
+        /* Styl dla wbudowanych rysunków */
+        .visual-grid { display: inline-grid; gap: 2px; margin: 10px 0; border: 2px solid #333; padding: 2px; background: #333;}
+        .grid-cell { background: #fff; width: 40px; height: 40px; }
+        .grid-cell.filled { background: #f1c40f; } /* Kolor żółty dla zamalowanych */
+        .visual-emoji { font-size: 2.5em; margin: 10px 0; letter-spacing: 5px; }
+
+        .input-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        input[type="text"] {
+            padding: 10px; font-size: 1em; border: 2px solid #e2e8f0;
+            border-radius: 6px; flex-grow: 1; max-width: 300px; outline: none;
+        }
+        input[type="text"]:focus { border-color: #f39c12; }
+        
+        button {
+            background-color: #f39c12; color: white; border: none; padding: 10px 20px;
+            font-size: 1em; border-radius: 6px; cursor: pointer; transition: 0.2s;
+        }
+        button:hover { background-color: #d68910; }
+        button.btn-hint { background-color: #3498db; }
+        button.btn-hint:hover { background-color: #2980b9; }
+        button.btn-answer { background-color: #9b59b6; }
+        button.btn-answer:hover { background-color: #8e44ad; }
+        
+        .feedback { font-weight: bold; margin-left: 10px; }
+        .correct { color: #1e8449; }
+        .incorrect { color: #c0392b; }
+        .hint-text { display: none; margin-top: 15px; padding: 12px; background-color: #d6eaf8; border-left: 4px solid #3498db; font-style: italic; color: #154360; border-radius: 0 6px 6px 0; }
+
+        /* SZYBKI START */
+        #start-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); display: flex; justify-content: center;
+            align-items: center; z-index: 1000;
+        }
+        .modal-content {
+            background: white; padding: 40px; border-radius: 12px; text-align: center;
+            max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .modal-content input {
+            width: 100%; margin-bottom: 15px; padding: 10px; box-sizing: border-box; text-align: center;
+            font-size: 1.1em; border: 2px solid #e2e8f0; border-radius: 6px;
+        }
+        .modal-content button { width: 100%; font-size: 1.1em; padding: 12px; background-color: #f39c12;}
+        .modal-content button:hover { background-color: #d68910;}
+        
+        #app-content { display: none; }
+        
+        .finish-container {
+            text-align: center; background: rgba(255,255,255,0.95); padding: 30px;
+            border-radius: 12px; margin-top: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .btn-finish { background-color: #e74c3c; font-size: 1.2em; padding: 15px 30px; }
+        .btn-finish:hover { background-color: #c0392b; }
+    </style>
+</head>
+<body>
+
+    <div id="start-modal">
+        <div class="modal-content">
+            <h2>Witaj! 👋</h2>
+            <p>Zanim zaczniemy potyczkę z ułamkami, wpisz swoje dane:</p>
+            <input type="text" id="student-name" placeholder="Imię i nazwisko" required>
+            <input type="text" id="student-class" placeholder="Klasa (np. 4A)" required>
+            <button onclick="startTest()">Rozpocznij test</button>
+            <p id="modal-error" style="color: red; font-size: 0.9em; display: none;">Proszę wypełnić wszystkie pola!</p>
+        </div>
+    </div>
+
+    <div id="app-content">
+        <div class="header-container">
+            <h1>Ułamek jako część całości 🍰</h1>
+            <p class="description">Zapisz odpowiedzi za pomocą ukośnika (np. <strong>3/4</strong>). <br>Liczby mieszane zapisuj ze spacją między całością a ułamkiem (np. <strong>2 1/2</strong>).</p>
+        </div>
+
+        <div id="tasks-container"></div>
+
+        <div class="finish-container">
+            <h2 id="finish-text">Skończyłeś? Wyślij wyniki do nauczyciela!</h2>
+            <button class="btn-finish" id="btn-submit" onclick="sendResults()">Wyślij wyniki 📧</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStudent = "";
+        let currentClass = "";
+        let resultsData = {}; 
+        let userAttempts = {};
+
+        function startTest() {
+            const nameInput = document.getElementById("student-name").value.trim();
+            const classInput = document.getElementById("student-class").value.trim();
+            
+            if(nameInput === "" || classInput === "") {
+                document.getElementById("modal-error").style.display = "block";
+                return;
+            }
+            
+            currentStudent = nameInput;
+            currentClass = classInput;
+            
+            document.getElementById("start-modal").style.display = "none";
+            document.getElementById("app-content").style.display = "block";
+        }
+
+        // BAZA ZADAŃ (Ułamki i liczby mieszane)
+        const tasksData = [
+            { text: "Ania i Bartek podzielili pizzę na 8 równych części. Ania zjadła 2 kawałki. Jaką część pizzy zjadła Ania?", hint: "Cała pizza ma 8 kawałków (mianownik), a Ania zjadła 2 (licznik).", answers: ["2/8", "1/4"] },
+            
+            { text: "Jaka część poniższej figury jest zamalowana?<br><div class='visual-grid' style='grid-template-columns: auto auto;'><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div><div class='grid-cell'></div></div>", hint: "Policz wszystkie kwadraciki (to mianownik). Następnie policz te zamalowane na żółto (to licznik).", answers: ["1/4"] },
+            
+            { text: "Jaka część poniższej figury jest zamalowana?<br><div class='visual-grid' style='grid-template-columns: auto auto auto;'><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div></div>", hint: "Figura składa się z 9 równych części. Ile jest zamalowanych?", answers: ["5/9"] },
+            
+            { text: "Spójrz na te balony. Jaka część wszystkich balonów jest żółta? <br><div class='visual-emoji'>🎈🎈💛💛💛🎈</div>", hint: "Policz wszystkie balony (jest ich 6), a następnie policz te, które reprezentują żółte serca.", answers: ["3/6", "1/2"] },
+            
+            { text: "Masz kawałek sznurka i obcinasz z niego jedną czwartą. Jak zapiszesz ten ułamek za pomocą liczb?", hint: "Jedna czwarta to 1 podzielone na 4.", answers: ["1/4"] },
+            
+            { text: "Wyobraź sobie, że leżą przed tobą trzy całe bochenki chleba i jeszcze połowa jednego. Jak zapiszesz to jako liczbę mieszaną?", hint: "Najpierw zapisz całości (3), postaw spację, a potem ułamek (1/2).", answers: ["3 1/2"] },
+            
+            { text: "Tu jest 5 całych jabłek i ćwierć jabłka. Zapisz to jako liczbę mieszaną.", hint: "Pamiętaj, że 'ćwierć' to 1/4. Zapisz całość, daj spację i ułamek.", answers: ["5 1/4"] },
+            
+            { text: "Wyraź za pomocą ułamka: <strong>17 minut – jaka to część godziny?</strong>", hint: "Jedna godzina ma 60 minut. Dlatego 17 minut to...", answers: ["17/60"] },
+            
+            { text: "Wyraź za pomocą ułamka: <strong>3 doby – jaka to część tygodnia?</strong>", hint: "Jeden tydzień ma 7 dni (dób).", answers: ["3/7"] },
+            
+            { text: "Zastąp znak zapytania odpowiednią liczbą mieszaną: <strong>2 tygodnie i 2 doby to ? tygodnia.</strong>", hint: "Mamy 2 pełne tygodnie i jeszcze 2 z 7 dni. Zapisz to w formacie: całości (spacja) ułamek.", answers: ["2 2/7"] },
+            
+            { text: "Zamiana jednostek: 1 kg to 100 dag. Jaka to część kilograma, jeśli masz 19 dag?", hint: "19 ze 100. Pamiętaj o znaku ukośnika.", answers: ["19/100"] },
+            
+            { text: "Tort podzielono na 10 równych kawałków. Każdy taki kawałek to...", hint: "Jeden z dziesięciu.", answers: ["1/10"] },
+            
+            { text: "Na stole leżą 3 całe pizze i dwie trzecie kolejnej pizzy. Zapisz to używając cyfr.", hint: "Trzy całości i ułamek dwie trzecie.", answers: ["3 2/3"] },
+            
+            { text: "Jaka część poniższej figury jest PUSTA (biała)?<br><div class='visual-grid' style='grid-template-columns: auto auto auto auto;'><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div></div>", hint: "Pytanie dotyczy PUSTYCH (niezamalowanych) pól. Są 4 pola łącznie, a puste są...", answers: ["2/4", "1/2"] },
+            
+            { text: "Odczytaj zapis słowny i zamień na liczbę mieszaną: <strong>cztery i pięć ósmych</strong>", hint: "Cztery to całości, a ułamek to licznik 5 i mianownik 8.", answers: ["4 5/8"] }
+        ];
+
+        const container = document.getElementById("tasks-container");
+
+        tasksData.forEach((task, index) => {
+            const taskNum = index + 1;
+            resultsData[taskNum] = "Nie rozwiązano"; 
+
+            const answersJson = JSON.stringify(task.answers).replace(/"/g, "'");
+            const firstAnswer = task.answers[0];
+
+            container.innerHTML += `
+                <div class="task-card" id="card${taskNum}">
+                    <div class="task-text"><strong>${taskNum}.</strong> ${task.text}</div>
+                    <div class="input-group">
+                        <input type="text" id="input${taskNum}" placeholder="Wpisz np. 1/2 albo 3 1/4">
+                        <button onclick="checkAnswer(${taskNum}, 'input${taskNum}', 'card${taskNum}', 'feedback${taskNum}', ${answersJson}, 'btn-answer${taskNum}')">Sprawdź</button>
+                        <button class="btn-hint" onclick="document.getElementById('hint${taskNum}').style.display='block'">Podpowiedź</button>
+                        
+                        <button class="btn-answer" id="btn-answer${taskNum}" style="display: none;" onclick="showAnswer(${taskNum}, 'input${taskNum}', '${firstAnswer}', 'card${taskNum}', 'feedback${taskNum}', 'btn-answer${taskNum}')">Odpowiedź</button>
+                        
+                        <span id="feedback${taskNum}" class="feedback"></span>
+                    </div>
+                    <div id="hint${taskNum}" class="hint-text">${task.hint}</div>
+                </div>
+            `;
+        });
+
+        function checkAnswer(taskNum, inputId, cardId, feedbackId, correctAnswers, btnAnswerId) {
+            let userInput = document.getElementById(inputId).value;
+            let feedbackEl = document.getElementById(feedbackId);
+            let cardEl = document.getElementById(cardId);
+            let btnAnswer = document.getElementById(btnAnswerId);
+            
+            cardEl.classList.remove("correct-bg", "incorrect-bg");
+
+            // WAŻNE: normalizujemy pozostawiając maksymalnie jedną spację
+            let normalized = userInput.trim().toLowerCase().replace(/\s+/g, ' ');
+            
+            if (normalized === "") return (feedbackEl.textContent = "Wpisz odpowiedź!", feedbackEl.className = "feedback incorrect");
+
+            if (userAttempts[inputId] === undefined) userAttempts[inputId] = new Set();
+
+            let isCorrect = correctAnswers.some(ans => ans.toLowerCase().trim().replace(/\s+/g, ' ') === normalized);
+
+            if (isCorrect) {
+                feedbackEl.textContent = "Świetnie! 🌟"; 
+                feedbackEl.className = "feedback correct"; 
+                cardEl.classList.add("correct-bg");
+                btnAnswer.style.display = "none";
+                
+                if(resultsData[taskNum] !== "Podglądał odpowiedź") {
+                    resultsData[taskNum] = "Samodzielnie";
+                }
+            } else {
+                if (userAttempts[inputId].has(userInput)) {
+                    feedbackEl.textContent = "Już podałeś taką odpowiedź. Spróbuj pomyśleć nad inną!";
+                } else {
+                    userAttempts[inputId].add(userInput); 
+                    feedbackEl.textContent = "Jeszcze nie... Spróbuj ponownie.";
+                }
+                feedbackEl.className = "feedback incorrect"; 
+                cardEl.classList.add("incorrect-bg");
+                
+                if (userAttempts[inputId].size >= 2) {
+                    btnAnswer.style.display = "inline-block";
+                }
+            }
+        }
+
+        function showAnswer(taskNum, inputId, correctAnswer, cardId, feedbackId, btnAnswerId) {
+            document.getElementById(inputId).value = correctAnswer;
+            document.getElementById(cardId).classList.remove("incorrect-bg");
+            document.getElementById(cardId).classList.add("correct-bg");
+            document.getElementById(feedbackId).innerHTML = "Oto prawidłowa odpowiedź.";
+            document.getElementById(feedbackId).className = "feedback correct";
+            document.getElementById(btnAnswerId).style.display = "none";
+            
+            resultsData[taskNum] = "Podglądał odpowiedź";
+        }
+
+        function sendResults() {
+            let correctCount = 0; let hintCount = 0; let notSolvedCount = 0;
+            let detailedReport = "";
+
+            for(let i=1; i<=15; i++) { // Zmienione na 15 zadań
+                let inputId = 'input' + i;
+                let currentInputVal = document.getElementById(inputId).value.trim();
+                let attemptsSet = userAttempts[inputId];
+                let wrongAttemptsString = (attemptsSet && attemptsSet.size > 0) ? Array.from(attemptsSet).join(", ") : "";
+
+                if(resultsData[i] === "Samodzielnie") {
+                    correctCount++;
+                    if (wrongAttemptsString !== "") {
+                        detailedReport += `Zadanie ${i}: Samodzielnie (Błędy przed sukcesem: ${wrongAttemptsString} | Odp: ${currentInputVal})\n`;
+                    } else {
+                        detailedReport += `Zadanie ${i}: Samodzielnie (Odp: ${currentInputVal})\n`;
+                    }
+                }
+                else if(resultsData[i] === "Podglądał odpowiedź") {
+                    hintCount++;
+                    detailedReport += `Zadanie ${i}: Podglądał odp (Błędne próby: ${wrongAttemptsString || "brak, zrezygnował od razu"})\n`;
+                }
+                else {
+                    notSolvedCount++;
+                    if (wrongAttemptsString !== "") {
+                        detailedReport += `Zadanie ${i}: Nie rozwiązano (Błędne próby: ${wrongAttemptsString})\n`;
+                    } else {
+                        detailedReport += `Zadanie ${i}: Nie rozwiązano (Pole puste)\n`;
+                    }
+                }
+            }
+
+            const finalMessage = `Uczeń: ${currentStudent}\nKlasa: ${currentClass}\n\nTEMAT: Ułamek jako część całości\n\nWYNIK GŁÓWNY:\n- Rozwiązane samodzielnie: ${correctCount} z 15\n- Z użyciem gotowej odpowiedzi: ${hintCount} z 15\n- Brak odpowiedzi: ${notSolvedCount} z 15\n\nSZCZEGÓŁY:\n${detailedReport}`;
+
+            const btnSubmit = document.getElementById("btn-submit");
+            btnSubmit.textContent = "Wysyłanie...";
+            btnSubmit.style.backgroundColor = "#7f8c8d";
+            btnSubmit.disabled = true;
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    access_key: "99356b6c-ab77-4ea0-a3cb-99560d40fafa", // Pamiętaj o podmianie klucza jeśli potrzebujesz!
+                    subject: `Wyniki Ułamki: ${currentStudent} (${currentClass})`,
+                    from_name: "Test Matematyczny (Ułamki)",
+                    message: finalMessage
+                })
+            })
+            .then(async (response) => {
+                if (response.status == 200) {
+                    document.getElementById("finish-text").innerText = "Udało się! Wyniki zostały wysłane do nauczyciela. Możesz zamknąć stronę.";
+                    btnSubmit.style.display = "none";
+                } else {
+                    document.getElementById("finish-text").innerText = "Błąd wysyłania. Zgłoś to nauczycielowi.";
+                    btnSubmit.textContent = "Spróbuj ponownie";
+                    btnSubmit.disabled = false;
+                    btnSubmit.style.backgroundColor = "#e74c3c";
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                document.getElementById("finish-text").innerText = "Błąd połączenia. Sprawdź internet i spróbuj ponownie.";
+                btnSubmit.textContent = "Wyślij";
+                btnSubmit.disabled = false;
+                btnSubmit.style.backgroundColor = "#e74c3c";
+            });
+        }
+    </script>
+</body>
+</html>
