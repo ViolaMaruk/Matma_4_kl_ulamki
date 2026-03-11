@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ułamek jako część całości i liczby mieszane</title>
+    <title>Ułamek jako część całości - Trening Wizualny</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -24,10 +24,10 @@
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             margin-bottom: 30px;
-            border-top: 5px solid #f39c12;
+            border-top: 5px solid #e67e22;
         }
         h1 {
-            text-align: center; color: #2c3e50; border-bottom: 2px solid #f39c12;
+            text-align: center; color: #2c3e50; border-bottom: 2px solid #e67e22;
             padding-bottom: 10px; margin-top: 0; margin-bottom: 15px;
         }
         .description { text-align: center; font-size: 1.1em; color: #555; margin: 0; }
@@ -35,36 +35,57 @@
         .task-card {
             background: #fff; padding: 20px 25px; margin-bottom: 20px;
             border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            border-left: 6px solid #f39c12; transition: all 0.3s;
+            border-left: 6px solid #e67e22; transition: all 0.3s;
         }
         .task-card.correct-bg { background-color: #d4edda; border-left-color: #28a745; }
         .task-card.incorrect-bg { background-color: #f8d7da; border-left-color: #dc3545; }
         .task-text { font-size: 1.1em; margin-bottom: 15px; }
         
-        /* Styl dla wbudowanych rysunków */
+        /* 🎨 STYLE DLA RYSUNKÓW (CSS ART) */
         .visual-grid { display: inline-grid; gap: 2px; margin: 10px 0; border: 2px solid #333; padding: 2px; background: #333;}
         .grid-cell { background: #fff; width: 40px; height: 40px; }
-        .grid-cell.filled { background: #f1c40f; } /* Kolor żółty dla zamalowanych */
+        .grid-cell.filled { background: #f1c40f; } /* Żółty kwadrat */
+        
+        .choco-grid { display: inline-grid; gap: 2px; margin: 10px 0; border: 2px solid #5d4037; padding: 2px; background: #5d4037; border-radius: 4px;}
+        .choco-cell { background: #795548; width: 40px; height: 40px; border-radius: 2px; box-shadow: inset 0 0 5px rgba(0,0,0,0.3); }
+        .choco-eaten { background: #f0f8ff; width: 40px; height: 40px; } /* Puste miejsce po czekoladzie */
+
         .visual-emoji { font-size: 2.5em; margin: 10px 0; letter-spacing: 5px; }
+
+        .shape-container { display: flex; align-items: center; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
+        
+        /* Koła (Pizze) ułamkowe */
+        .circ { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #333; background: #fff; position: relative; overflow: hidden; }
+        .circ.filled { background: #e67e22; } /* Całe koło */
+        .circ.half::after { content: ''; position: absolute; left: 0; top: 0; width: 50%; height: 100%; background: #e67e22; } /* Pół koła */
+        .circ.quarter::after { content: ''; position: absolute; left: 0; top: 0; width: 50%; height: 50%; background: #e67e22; } /* Ćwierć koła */
+        .circ.three-quarter { background: #e67e22; }
+        .circ.three-quarter::after { content: ''; position: absolute; right: 0; bottom: 0; width: 50%; height: 50%; background: #fff; border-top: 2px solid #333; border-left: 2px solid #333;} /* Trzy czwarte */
+        
+        /* Bateria */
+        .battery { width: 150px; height: 40px; border: 3px solid #333; border-radius: 5px; padding: 3px; display: flex; gap: 3px; position: relative; margin: 10px 0;}
+        .battery::after { content: ''; position: absolute; right: -10px; top: 8px; width: 7px; height: 18px; background: #333; border-radius: 0 4px 4px 0; }
+        .bat-level { flex: 1; background: #2ecc71; border-radius: 2px; }
+        .bat-level.empty { background: #e0e0e0; }
 
         .input-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         input[type="text"] {
-            padding: 10px; font-size: 1em; border: 2px solid #e2e8f0;
-            border-radius: 6px; flex-grow: 1; max-width: 300px; outline: none;
+            padding: 10px; font-size: 1.1em; border: 2px solid #e2e8f0;
+            border-radius: 6px; flex-grow: 1; max-width: 300px; outline: none; font-weight: bold;
         }
-        input[type="text"]:focus { border-color: #f39c12; }
+        input[type="text"]:focus { border-color: #e67e22; }
         
         button {
-            background-color: #f39c12; color: white; border: none; padding: 10px 20px;
-            font-size: 1em; border-radius: 6px; cursor: pointer; transition: 0.2s;
+            background-color: #e67e22; color: white; border: none; padding: 10px 20px;
+            font-size: 1em; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: bold;
         }
-        button:hover { background-color: #d68910; }
+        button:hover { background-color: #d35400; }
         button.btn-hint { background-color: #3498db; }
         button.btn-hint:hover { background-color: #2980b9; }
         button.btn-answer { background-color: #9b59b6; }
         button.btn-answer:hover { background-color: #8e44ad; }
         
-        .feedback { font-weight: bold; margin-left: 10px; }
+        .feedback { font-weight: bold; margin-left: 10px; font-size: 1.1em;}
         .correct { color: #1e8449; }
         .incorrect { color: #c0392b; }
         .hint-text { display: none; margin-top: 15px; padding: 12px; background-color: #d6eaf8; border-left: 4px solid #3498db; font-style: italic; color: #154360; border-radius: 0 6px 6px 0; }
@@ -83,8 +104,8 @@
             width: 100%; margin-bottom: 15px; padding: 10px; box-sizing: border-box; text-align: center;
             font-size: 1.1em; border: 2px solid #e2e8f0; border-radius: 6px;
         }
-        .modal-content button { width: 100%; font-size: 1.1em; padding: 12px; background-color: #f39c12;}
-        .modal-content button:hover { background-color: #d68910;}
+        .modal-content button { width: 100%; font-size: 1.1em; padding: 12px; background-color: #e67e22;}
+        .modal-content button:hover { background-color: #d35400;}
         
         #app-content { display: none; }
         
@@ -101,7 +122,7 @@
     <div id="start-modal">
         <div class="modal-content">
             <h2>Witaj! 👋</h2>
-            <p>Zanim zaczniemy potyczkę z ułamkami, wpisz swoje dane:</p>
+            <p>Zanim zaczniemy wizualny trening z ułamkami, wpisz swoje dane:</p>
             <input type="text" id="student-name" placeholder="Imię i nazwisko" required>
             <input type="text" id="student-class" placeholder="Klasa (np. 4A)" required>
             <button onclick="startTest()">Rozpocznij test</button>
@@ -145,37 +166,83 @@
             document.getElementById("app-content").style.display = "block";
         }
 
-        // BAZA ZADAŃ (Ułamki i liczby mieszane)
+        // BAZA 15 ZADAŃ WIZUALNYCH
         const tasksData = [
-            { text: "Ania i Bartek podzielili pizzę na 8 równych części. Ania zjadła 2 kawałki. Jaką część pizzy zjadła Ania?", hint: "Cała pizza ma 8 kawałków (mianownik), a Ania zjadła 2 (licznik).", answers: ["2/8", "1/4"] },
-            
-            { text: "Jaka część poniższej figury jest zamalowana?<br><div class='visual-grid' style='grid-template-columns: auto auto;'><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div><div class='grid-cell'></div></div>", hint: "Policz wszystkie kwadraciki (to mianownik). Następnie policz te zamalowane na żółto (to licznik).", answers: ["1/4"] },
-            
-            { text: "Jaka część poniższej figury jest zamalowana?<br><div class='visual-grid' style='grid-template-columns: auto auto auto;'><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div></div>", hint: "Figura składa się z 9 równych części. Ile jest zamalowanych?", answers: ["5/9"] },
-            
-            { text: "Spójrz na te balony. Jaka część wszystkich balonów jest żółta? <br><div class='visual-emoji'>🎈🎈💛💛💛🎈</div>", hint: "Policz wszystkie balony (jest ich 6), a następnie policz te, które reprezentują żółte serca.", answers: ["3/6", "1/2"] },
-            
-            { text: "Masz kawałek sznurka i obcinasz z niego jedną czwartą. Jak zapiszesz ten ułamek za pomocą liczb?", hint: "Jedna czwarta to 1 podzielone na 4.", answers: ["1/4"] },
-            
-            { text: "Wyobraź sobie, że leżą przed tobą trzy całe bochenki chleba i jeszcze połowa jednego. Jak zapiszesz to jako liczbę mieszaną?", hint: "Najpierw zapisz całości (3), postaw spację, a potem ułamek (1/2).", answers: ["3 1/2"] },
-            
-            { text: "Tu jest 5 całych jabłek i ćwierć jabłka. Zapisz to jako liczbę mieszaną.", hint: "Pamiętaj, że 'ćwierć' to 1/4. Zapisz całość, daj spację i ułamek.", answers: ["5 1/4"] },
-            
-            { text: "Wyraź za pomocą ułamka: <strong>17 minut – jaka to część godziny?</strong>", hint: "Jedna godzina ma 60 minut. Dlatego 17 minut to...", answers: ["17/60"] },
-            
-            { text: "Wyraź za pomocą ułamka: <strong>3 doby – jaka to część tygodnia?</strong>", hint: "Jeden tydzień ma 7 dni (dób).", answers: ["3/7"] },
-            
-            { text: "Zastąp znak zapytania odpowiednią liczbą mieszaną: <strong>2 tygodnie i 2 doby to ? tygodnia.</strong>", hint: "Mamy 2 pełne tygodnie i jeszcze 2 z 7 dni. Zapisz to w formacie: całości (spacja) ułamek.", answers: ["2 2/7"] },
-            
-            { text: "Zamiana jednostek: 1 kg to 100 dag. Jaka to część kilograma, jeśli masz 19 dag?", hint: "19 ze 100. Pamiętaj o znaku ukośnika.", answers: ["19/100"] },
-            
-            { text: "Tort podzielono na 10 równych kawałków. Każdy taki kawałek to...", hint: "Jeden z dziesięciu.", answers: ["1/10"] },
-            
-            { text: "Na stole leżą 3 całe pizze i dwie trzecie kolejnej pizzy. Zapisz to używając cyfr.", hint: "Trzy całości i ułamek dwie trzecie.", answers: ["3 2/3"] },
-            
-            { text: "Jaka część poniższej figury jest PUSTA (biała)?<br><div class='visual-grid' style='grid-template-columns: auto auto auto auto;'><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div></div>", hint: "Pytanie dotyczy PUSTYCH (niezamalowanych) pól. Są 4 pola łącznie, a puste są...", answers: ["2/4", "1/2"] },
-            
-            { text: "Odczytaj zapis słowny i zamień na liczbę mieszaną: <strong>cztery i pięć ósmych</strong>", hint: "Cztery to całości, a ułamek to licznik 5 i mianownik 8.", answers: ["4 5/8"] }
+            { 
+                text: "Tabliczka czekolady ma 8 kostek. Jaka część czekolady <strong>została zjedzona</strong> (puste miejsca)?<br><div class='choco-grid' style='grid-template-columns: repeat(4, auto);'><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-eaten'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-eaten'></div><div class='choco-eaten'></div></div>", 
+                hint: "Wszystkich kostek w całości jest 8. Puste miejsca to kostki zjedzone. Policz je.", 
+                answers: ["3/8"] 
+            },
+            { 
+                text: "Jaka część poniższej figury jest zamalowana na żółto?<br><div class='visual-grid' style='grid-template-columns: auto auto;'><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div><div class='grid-cell'></div></div>", 
+                hint: "Policz wszystkie kwadraciki (mianownik), a potem tylko żółte (licznik).", 
+                answers: ["1/4"] 
+            },
+            { 
+                text: "Jaka część poniższej dużej figury jest zamalowana na żółto?<br><div class='visual-grid' style='grid-template-columns: auto auto auto;'><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div></div>", 
+                hint: "Siatka składa się z 9 równych części. Ile jest żółtych?", 
+                answers: ["5/9"] 
+            },
+            { 
+                text: "Spójrz na balony. Jaka część wszystkich balonów jest <strong>niebieska</strong>? <br><div class='visual-emoji'>🎈🎈🎈🎈🔵🔵</div>", 
+                hint: "Zlicz wszystkie balony (jest ich 6). Niebieskie stanowią pewną część tej szóstki.", 
+                answers: ["2/6", "1/3"] 
+            },
+            { 
+                text: "W grupie zwierząt są pieski i kotki. Jaka część zwierząt to <strong>psy</strong>? <br><div class='visual-emoji'>🐶🐶🐶🐱🐱🐱🐱🐱</div>", 
+                hint: "Dodaj do siebie psy i koty, by poznać mianownik. Licznik to liczba psów.", 
+                answers: ["3/8"] 
+            },
+            { 
+                text: "Poniżej narysowano pomarańczowe koła. Zapisz jako <strong>liczbę mieszaną</strong> (całości i ułamek), ile ich jest:<br><div class='shape-container'><div class='circ filled'></div><div class='circ filled'></div><div class='circ half'></div></div>", 
+                hint: "Widzisz dwa pełne koła i jedną połowę. Zapisz to używając spacji, np. 2 1/2.", 
+                answers: ["2 1/2", "2 2/4"] 
+            },
+            { 
+                text: "Bateria telefonu ma 5 segmentów. Jaka część baterii jest <strong>naładowana</strong> (zielone paski)?<br><div class='battery'><div class='bat-level'></div><div class='bat-level'></div><div class='bat-level'></div><div class='bat-level empty'></div><div class='bat-level empty'></div></div>", 
+                hint: "Cała bateria ma 5 kresek. Ile kresek świeci na zielono?", 
+                answers: ["3/5"] 
+            },
+            { 
+                text: "Pani w sklepie ułożyła jabłka na tackach (po 4 na każdej). Zapisz jako liczbę mieszaną, ile mamy tac z jabłkami:<br><div class='visual-emoji'>🍎🍎🍎🍎 &nbsp; 🍎🍎🍎🍎 &nbsp; 🍎⬜⬜⬜</div>", 
+                hint: "Mamy 2 pełne tace. Na trzeciej tacy leży 1 jabłko, a wchodzą na nią 4. Ułamek to 1/4.", 
+                answers: ["2 1/4"] 
+            },
+            { 
+                text: "Jaka część gwiazd na nocnym niebie świeci (jest żółta)? <br><div class='visual-emoji'>⭐⭐⭐⭐⭐⭐⭐🌑🌑🌑</div>", 
+                hint: "Policz wszystkie gwiazdy (żółte i czarne) – to twój mianownik.", 
+                answers: ["7/10"] 
+            },
+            { 
+                text: "Jaka część poniższej figury jest <strong>PUSTA</strong> (biała)?<br><div class='visual-grid' style='grid-template-columns: repeat(4, auto);'><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div></div>", 
+                hint: "Pytanie dotyczy PUSTYCH (niezamalowanych) pól, a nie żółtych!", 
+                answers: ["2/4", "1/2"] 
+            },
+            { 
+                text: "Zapisz ułamek przedstawiony za pomocą kół. Zwróć uwagę, że mamy jedno całe koło i ćwiartkę drugiego (liczba mieszana):<br><div class='shape-container'><div class='circ filled'></div><div class='circ quarter'></div></div>", 
+                hint: "Jeden pełny element i jedna czwarta (1/4) drugiego elementu.", 
+                answers: ["1 1/4"] 
+            },
+            { 
+                text: "W garażu zaparkowano samochody czerwone i niebieskie. Jaka część aut jest <strong>czerwona</strong>? <br><div class='visual-emoji'>🚗🚙🚗🚙🚗🚗🚗</div>", 
+                hint: "Wszystkich aut jest 7. Policz tylko czerwone.", 
+                answers: ["5/7"] 
+            },
+            { 
+                text: "Jaka część trójkątów jest pomalowana na czerwono? <br><div class='visual-emoji'>🔺🔺🔺🔺🔺⬜⬜⬜⬜⬜</div>", 
+                hint: "Policz wszystkie trójkąty. Połowa z nich jest czerwona. Możesz zapisać to na dwa sposoby.", 
+                answers: ["5/10", "1/2"] 
+            },
+            { 
+                text: "Zapisz jako liczbę mieszaną: 3 całe koła i wycinek ostatniego.<br><div class='shape-container'><div class='circ filled'></div><div class='circ filled'></div><div class='circ filled'></div><div class='circ three-quarter'></div></div>", 
+                hint: "Ostatnie koło ma wyciętą jedną ćwiartkę, czyli zamalowane są jego trzy czwarte (3/4).", 
+                answers: ["3 3/4"] 
+            },
+            { 
+                text: "Ogrodnik posadził kwiaty. Jaka część wszystkich kwiatów to <strong>słoneczniki</strong>? <br><div class='visual-emoji'>🌻🌻🌷🌷🌷🌷🌻🌻</div>", 
+                hint: "Zlicz wszystkie kwiaty. Potem policz tylko słoneczniki (te żółte z brązowym środkiem).", 
+                answers: ["4/8", "1/2", "2/4"] 
+            }
         ];
 
         const container = document.getElementById("tasks-container");
@@ -191,7 +258,7 @@
                 <div class="task-card" id="card${taskNum}">
                     <div class="task-text"><strong>${taskNum}.</strong> ${task.text}</div>
                     <div class="input-group">
-                        <input type="text" id="input${taskNum}" placeholder="Wpisz np. 1/2 albo 3 1/4">
+                        <input type="text" id="input${taskNum}" placeholder="Wpisz odp. (np. 1/2 albo 3 1/4)">
                         <button onclick="checkAnswer(${taskNum}, 'input${taskNum}', 'card${taskNum}', 'feedback${taskNum}', ${answersJson}, 'btn-answer${taskNum}')">Sprawdź</button>
                         <button class="btn-hint" onclick="document.getElementById('hint${taskNum}').style.display='block'">Podpowiedź</button>
                         
@@ -212,8 +279,8 @@
             
             cardEl.classList.remove("correct-bg", "incorrect-bg");
 
-            // WAŻNE: normalizujemy pozostawiając maksymalnie jedną spację
-            let normalized = userInput.trim().toLowerCase().replace(/\s+/g, ' ');
+            // Normalizacja: usuwa podwójne spacje, zamienia ew. przecinki
+            let normalized = userInput.trim().toLowerCase().replace(/\s+/g, ' ').replace(',', '.');
             
             if (normalized === "") return (feedbackEl.textContent = "Wpisz odpowiedź!", feedbackEl.className = "feedback incorrect");
 
@@ -261,7 +328,7 @@
             let correctCount = 0; let hintCount = 0; let notSolvedCount = 0;
             let detailedReport = "";
 
-            for(let i=1; i<=15; i++) { // Zmienione na 15 zadań
+            for(let i=1; i<=15; i++) { 
                 let inputId = 'input' + i;
                 let currentInputVal = document.getElementById(inputId).value.trim();
                 let attemptsSet = userAttempts[inputId];
@@ -289,7 +356,7 @@
                 }
             }
 
-            const finalMessage = `Uczeń: ${currentStudent}\nKlasa: ${currentClass}\n\nTEMAT: Ułamek jako część całości\n\nWYNIK GŁÓWNY:\n- Rozwiązane samodzielnie: ${correctCount} z 15\n- Z użyciem gotowej odpowiedzi: ${hintCount} z 15\n- Brak odpowiedzi: ${notSolvedCount} z 15\n\nSZCZEGÓŁY:\n${detailedReport}`;
+            const finalMessage = `Uczeń: ${currentStudent}\nKlasa: ${currentClass}\n\nTEMAT: Ułamek jako część całości (Trening Wizualny)\n\nWYNIK GŁÓWNY:\n- Rozwiązane samodzielnie: ${correctCount} z 15\n- Z użyciem gotowej odpowiedzi: ${hintCount} z 15\n- Brak odpowiedzi: ${notSolvedCount} z 15\n\nSZCZEGÓŁY:\n${detailedReport}`;
 
             const btnSubmit = document.getElementById("btn-submit");
             btnSubmit.textContent = "Wysyłanie...";
@@ -300,9 +367,9 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({
-                    access_key: "99356b6c-ab77-4ea0-a3cb-99560d40fafa", // Pamiętaj o podmianie klucza jeśli potrzebujesz!
+                    access_key: "99356b6c-ab77-4ea0-a3cb-99560d40fafa", // Ten sam klucz z poprzedniej wersji
                     subject: `Wyniki Ułamki: ${currentStudent} (${currentClass})`,
-                    from_name: "Test Matematyczny (Ułamki)",
+                    from_name: "Trenażer Matematyczny",
                     message: finalMessage
                 })
             })
