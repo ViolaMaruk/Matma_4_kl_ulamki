@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ułamki i Liczby Mieszane - Trening</title>
+    <title>Ułamek jako część całości - Trening Wizualny</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f8ff;
+            background-color: #f0f8ff; 
+            background-size: cover; 
+            background-position: center;
+            background-attachment: fixed; 
+            background-repeat: no-repeat;
             color: #333;
             line-height: 1.6;
             padding: 20px;
@@ -20,10 +24,10 @@
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             margin-bottom: 30px;
-            border-top: 5px solid #8e44ad;
+            border-top: 5px solid #e67e22;
         }
         h1 {
-            text-align: center; color: #2c3e50; border-bottom: 2px solid #8e44ad;
+            text-align: center; color: #2c3e50; border-bottom: 2px solid #e67e22;
             padding-bottom: 10px; margin-top: 0; margin-bottom: 15px;
         }
         .description { text-align: center; font-size: 1.1em; color: #555; margin: 0; }
@@ -31,69 +35,62 @@
         .task-card {
             background: #fff; padding: 20px 25px; margin-bottom: 20px;
             border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            border-left: 6px solid #8e44ad; transition: all 0.3s;
+            border-left: 6px solid #e67e22; transition: all 0.3s;
         }
         .task-card.correct-bg { background-color: #d4edda; border-left-color: #28a745; }
         .task-card.incorrect-bg { background-color: #f8d7da; border-left-color: #dc3545; }
         .task-text { font-size: 1.1em; margin-bottom: 15px; }
         
-        /* WIZUALIZACJE CSS */
+        /* 🎨 STYLE DLA RYSUNKÓW (CSS ART) */
         .visual-grid { display: inline-grid; gap: 2px; margin: 10px 0; border: 2px solid #333; padding: 2px; background: #333;}
         .grid-cell { background: #fff; width: 40px; height: 40px; }
-        .grid-cell.filled { background: #ff9ff3; } /* Różowy wypełniony */
+        .grid-cell.filled { background: #f1c40f; } 
         
         .choco-grid { display: inline-grid; gap: 2px; margin: 10px 0; border: 2px solid #5d4037; padding: 2px; background: #5d4037; border-radius: 4px;}
         .choco-cell { background: #795548; width: 40px; height: 40px; border-radius: 2px; box-shadow: inset 0 0 5px rgba(0,0,0,0.3); }
-        .choco-eaten { background: #f0f8ff; width: 40px; height: 40px; }
+        .choco-eaten { background: #f0f8ff; width: 40px; height: 40px; } 
 
-        .btn-blue-4 { width: 40px; height: 40px; background: #3498db; border-radius: 50%; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 8px; box-sizing: border-box; border: 2px solid #2980b9; margin: 3px; }
-        .btn-blue-2 { width: 40px; height: 40px; background: #3498db; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 0 14px; box-sizing: border-box; border: 2px solid #2980b9; margin: 3px;}
-        .hole { background: white; border-radius: 50%; width: 100%; height: 100%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); }
-        .hole-sm { background: white; width: 8px; height: 8px; border-radius: 50%; margin: 0 auto; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);}
+        .visual-emoji { font-size: 2.5em; margin: 10px 0; letter-spacing: 5px; }
 
         .shape-container { display: flex; align-items: center; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
         
+        /* Koła (Pizze) ułamkowe */
         .circ { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #333; background: #fff; position: relative; overflow: hidden; }
-        .circ.filled { background: #8e44ad; }
-        .circ.half::after { content: ''; position: absolute; left: 0; top: 0; width: 50%; height: 100%; background: #8e44ad; }
-        .circ.three-quarter { background: #8e44ad; }
-        .circ.three-quarter::after { content: ''; position: absolute; right: 0; bottom: 0; width: 50%; height: 50%; background: #fff; border-top: 2px solid #333; border-left: 2px solid #333;}
+        .circ.filled { background: #e67e22; } 
+        .circ.half::after { content: ''; position: absolute; left: 0; top: 0; width: 50%; height: 100%; background: #e67e22; } 
+        .circ.quarter::after { content: ''; position: absolute; left: 0; top: 0; width: 50%; height: 50%; background: #e67e22; } 
+        .circ.three-quarter { background: #e67e22; }
+        .circ.three-quarter::after { content: ''; position: absolute; right: 0; bottom: 0; width: 50%; height: 50%; background: #fff; border-top: 2px solid #333; border-left: 2px solid #333;} 
         
-        .sq { width: 40px; height: 40px; border: 2px solid #333; margin: 3px; display: inline-block; vertical-align: middle; }
-        .sq.full { background: #feca57; }
-        .sq.half { background: linear-gradient(to top right, #feca57 50%, #fff 50%); }
-
-        .battery { width: 200px; height: 40px; border: 3px solid #333; border-radius: 5px; padding: 3px; display: flex; gap: 3px; position: relative; margin: 10px 0;}
+        /* Bateria */
+        .battery { width: 150px; height: 40px; border: 3px solid #333; border-radius: 5px; padding: 3px; display: flex; gap: 3px; position: relative; margin: 10px 0;}
         .battery::after { content: ''; position: absolute; right: -10px; top: 8px; width: 7px; height: 18px; background: #333; border-radius: 0 4px 4px 0; }
         .bat-level { flex: 1; background: #2ecc71; border-radius: 2px; }
         .bat-level.empty { background: #e0e0e0; }
-
-        .visual-emoji { font-size: 2.5em; margin: 10px 0; letter-spacing: 5px; }
-        .unit-emoji { font-size: 1.5em; margin-right: 10px; vertical-align: middle; }
-        .unit-badge { display: inline-block; background: #f3e5f5; padding: 3px 8px; border-radius: 4px; border: 1px solid #ce93d8; color: #6a1b9a; font-size: 0.9em; margin-bottom: 8px; font-weight: bold;}
-        .flex-row { display: flex; align-items: center; flex-wrap: wrap; margin: 10px 0; }
 
         .input-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         input[type="text"] {
             padding: 10px; font-size: 1.1em; border: 2px solid #e2e8f0;
             border-radius: 6px; flex-grow: 1; max-width: 300px; outline: none; font-weight: bold;
         }
-        input[type="text"]:focus { border-color: #8e44ad; }
+        input[type="text"]:focus { border-color: #e67e22; }
         
         button {
-            background-color: #8e44ad; color: white; border: none; padding: 10px 20px;
+            background-color: #e67e22; color: white; border: none; padding: 10px 20px;
             font-size: 1em; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: bold;
         }
-        button:hover { background-color: #732d91; }
+        button:hover { background-color: #d35400; }
         button.btn-hint { background-color: #3498db; }
         button.btn-hint:hover { background-color: #2980b9; }
-        button.btn-answer { background-color: #e67e22; }
+        button.btn-answer { background-color: #9b59b6; }
+        button.btn-answer:hover { background-color: #8e44ad; }
         
         .feedback { font-weight: bold; margin-left: 10px; font-size: 1.1em;}
         .correct { color: #1e8449; }
         .incorrect { color: #c0392b; }
         .hint-text { display: none; margin-top: 15px; padding: 12px; background-color: #d6eaf8; border-left: 4px solid #3498db; font-style: italic; color: #154360; border-radius: 0 6px 6px 0; }
 
+        /* SZYBKI START */
         #start-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); display: flex; justify-content: center;
@@ -107,11 +104,15 @@
             width: 100%; margin-bottom: 15px; padding: 10px; box-sizing: border-box; text-align: center;
             font-size: 1.1em; border: 2px solid #e2e8f0; border-radius: 6px;
         }
-        .modal-content button { width: 100%; font-size: 1.1em; padding: 12px; background-color: #8e44ad;}
-        .modal-content button:hover { background-color: #732d91;}
+        .modal-content button { width: 100%; font-size: 1.1em; padding: 12px; background-color: #e67e22;}
+        .modal-content button:hover { background-color: #d35400;}
         
         #app-content { display: none; }
-        .finish-container { text-align: center; background: rgba(255,255,255,0.95); padding: 30px; border-radius: 12px; margin-top: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        
+        .finish-container {
+            text-align: center; background: rgba(255,255,255,0.95); padding: 30px;
+            border-radius: 12px; margin-top: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
         .btn-finish { background-color: #e74c3c; font-size: 1.2em; padding: 15px 30px; }
         .btn-finish:hover { background-color: #c0392b; }
     </style>
@@ -121,7 +122,7 @@
     <div id="start-modal">
         <div class="modal-content">
             <h2>Witaj! 👋</h2>
-            <p>Zanim zaczniemy test, wpisz swoje dane:</p>
+            <p>Zanim zaczniemy wizualny trening z ułamkami, wpisz swoje dane:</p>
             <input type="text" id="student-name" placeholder="Imię i nazwisko" required>
             <input type="text" id="student-class" placeholder="Klasa (np. 4A)" required>
             <button onclick="startTest()">Rozpocznij test</button>
@@ -131,8 +132,8 @@
 
     <div id="app-content">
         <div class="header-container">
-            <h1>Trening: Ułamki i Jednostki 🍰⏱️</h1>
-            <p class="description">Zapisz odpowiedzi jako ułamki (np. <strong>3/4</strong>). <br>Liczby mieszane zapisuj ze spacją (np. <strong>2 1/2</strong>).</p>
+            <h1>Ułamek jako część całości 🍰</h1>
+            <p class="description">Zapisz odpowiedzi za pomocą ukośnika (np. <strong>3/4</strong>). <br>Liczby mieszane zapisuj ze spacją między całością a ułamkiem (np. <strong>2 1/2</strong>).</p>
         </div>
 
         <div id="tasks-container"></div>
@@ -157,96 +158,116 @@
                 document.getElementById("modal-error").style.display = "block";
                 return;
             }
+            
             currentStudent = nameInput;
             currentClass = classInput;
+            
             document.getElementById("start-modal").style.display = "none";
             document.getElementById("app-content").style.display = "block";
         }
 
-        // BAZA: 10 NOWYCH ZADAŃ GRAFICZNYCH + 10 ZADAŃ Z JEDNOSTKAMI
+        // BAZA 20 ZADAŃ (1-10 wizualne, 11-20 jednostki)
         const tasksData = [
-            // --- 1-10: WIZUALNE TRENINGOWE ---
             { 
-                text: "1. Duża tabliczka czekolady ma 15 kostek. Jaka część czekolady <strong>została zjedzona</strong> (puste miejsca)?<br><div class='choco-grid' style='grid-template-columns: repeat(5, auto);'><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-eaten'></div><div class='choco-eaten'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-eaten'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-eaten'></div></div>", 
-                hint: "Zlicz wszystkie miejsca (jest ich 15). Policz tylko biaлые puste kafelki (to licznik).", answers: ["4/15"] 
+                text: "Tabliczka czekolady ma 8 kostek. Jaka część czekolady <strong>została zjedzona</strong> (puste miejsca)?<br><div class='choco-grid' style='grid-template-columns: repeat(4, auto);'><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-eaten'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-eaten'></div><div class='choco-eaten'></div></div>", 
+                hint: "Wszystkich kostek w całości jest 8. Puste miejsca to kostki zjedzone. Policz je.", 
+                answers: ["3/8"] 
             },
             { 
-                text: "2. Jaka część poniższej figury jest zamalowana na różowo?<br><div class='visual-grid' style='grid-template-columns: repeat(4, auto);'><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div></div>", 
-                hint: "Policz wszystkie kwadraciki (mianownik), a potem różowe (licznik).", answers: ["7/12"] 
+                text: "Jaka część poniższej figury jest zamalowana na żółto?<br><div class='visual-grid' style='grid-template-columns: auto auto;'><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div><div class='grid-cell'></div></div>", 
+                hint: "Policz wszystkie kwadraciki (mianownik), a potem tylko żółte (licznik).", 
+                answers: ["1/4"] 
             },
             { 
-                text: "3. Bateria ma 8 segmentów. Jaka część baterii jest <strong>naładowana</strong> (zielone paski)?<br><div class='battery'><div class='bat-level'></div><div class='bat-level'></div><div class='bat-level'></div><div class='bat-level'></div><div class='bat-level'></div><div class='bat-level empty'></div><div class='bat-level empty'></div><div class='bat-level empty'></div></div>", 
-                hint: "Bateria podzielona na 8 części. Ile jest zielonych?", answers: ["5/8"] 
+                text: "Jaka część poniższej dużej figury jest zamalowana na żółto?<br><div class='visual-grid' style='grid-template-columns: auto auto auto;'><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div></div>", 
+                hint: "Siatka składa się z 9 równych części. Ile jest żółtych?", 
+                answers: ["5/9"] 
             },
             { 
-                text: "4. Jaka część niebieskich guzików ma dokładnie <strong>cztery dziurki</strong>?<br><div class='flex-row'><div class='btn-blue-4'><div class='hole'></div><div class='hole'></div><div class='hole'></div><div class='hole'></div></div><div class='btn-blue-2'><div class='hole-sm'></div><div class='hole-sm'></div></div><div class='btn-blue-4'><div class='hole'></div><div class='hole'></div><div class='hole'></div><div class='hole'></div></div><div class='btn-blue-2'><div class='hole-sm'></div><div class='hole-sm'></div></div><div class='btn-blue-2'><div class='hole-sm'></div><div class='hole-sm'></div></div><div class='btn-blue-2'><div class='hole-sm'></div><div class='hole-sm'></div></div><div class='btn-blue-4'><div class='hole'></div><div class='hole'></div><div class='hole'></div><div class='hole'></div></div><div class='btn-blue-2'><div class='hole-sm'></div><div class='hole-sm'></div></div><div class='btn-blue-2'><div class='hole-sm'></div><div class='hole-sm'></div></div><div class='btn-blue-2'><div class='hole-sm'></div><div class='hole-sm'></div></div></div>", 
-                hint: "Wszystkich guzików jest 10. Policz tylko te, które mają po 4 białe kropki w środku.", answers: ["3/10"] 
+                text: "Spójrz na balony. Jaka część wszystkich balonów jest <strong>niebieska</strong>? <br><div class='visual-emoji'>🎈🎈🎈🎈🔵🔵</div>", 
+                hint: "Zlicz wszystkie balony (jest ich 6). Niebieskie stanowią pewną część tej szóstki.", 
+                answers: ["2/6", "1/3"] 
             },
             { 
-                text: "5. Poniżej narysowano fioletowe koła. Zapisz jako <strong>liczbę mieszaną</strong> (całości i ułamek), ile ich jest:<br><div class='shape-container'><div class='circ filled'></div><div class='circ filled'></div><div class='circ filled'></div><div class='circ filled'></div><div class='circ half'></div></div>", 
-                hint: "Widzisz 4 pełne koła i jedną połowę. Zapisz to używając spacji.", answers: ["4 1/2", "4 2/4"] 
+                text: "W grupie zwierząt są pieski i kotki. Jaka część zwierząt to <strong>psy</strong>? <br><div class='visual-emoji'>🐶🐶🐶🐱🐱🐱🐱🐱</div>", 
+                hint: "Dodaj do siebie psy i koty, by poznać mianownik. Licznik to liczba psów.", 
+                answers: ["3/8"] 
             },
             { 
-                text: "6. Spójrz na balony. Jaka część wszystkich balonów jest <strong>żółta</strong>? <br><div class='visual-emoji'>🎈🎈🎈🎈🎈 🟡🟡🟡🟡</div>", 
-                hint: "Czerwonych (🎈) jest 5, a żółtych (🟡) 4. Jaka to część ze wszystkich?", answers: ["4/9"] 
+                text: "Poniżej narysowano pomarańczowe koła. Zapisz jako <strong>liczbę mieszaną</strong> (całości i ułamek), ile ich jest:<br><div class='shape-container'><div class='circ filled'></div><div class='circ filled'></div><div class='circ half'></div></div>", 
+                hint: "Widzisz dwa pełne koła i jedną połowę. Zapisz to używając spacji, np. 2 1/2.", 
+                answers: ["2 1/2", "2 2/4"] 
             },
             { 
-                text: "7. Ile kwadratów zamalowano? Zapisz jako <strong>liczbę mieszaną</strong>.<br><div class='flex-row'><div class='sq full'></div><div class='sq full'></div><div class='sq half'></div></div>", 
-                hint: "Dwa kwadraty są pełne, a trzeci to tylko połowa.", answers: ["2 1/2"] 
+                text: "Bateria telefonu ma 5 segmentów. Jaka część baterii jest <strong>naładowana</strong> (zielone paski)?<br><div class='battery'><div class='bat-level'></div><div class='bat-level'></div><div class='bat-level'></div><div class='bat-level empty'></div><div class='bat-level empty'></div></div>", 
+                hint: "Cała bateria ma 5 kresek. Ile kresek świeci na zielono?", 
+                answers: ["3/5"] 
             },
             { 
-                text: "8. Jaka część gwiazd na nocnym niebie <strong>NIE świeci</strong> (jest ciemna)? <br><div class='visual-emoji'>⭐⭐⭐⭐⭐⭐🌑🌑🌑🌑</div>", 
-                hint: "Policz wszystkie gwiazdy (mianownik), a potem ciemne (licznik).", answers: ["4/10", "2/5"] 
+                text: "Pani w sklepie ułożyła jabłka na tackach (po 4 na każdej). Zapisz jako liczbę mieszaną, ile mamy tac z jabłkami:<br><div class='visual-emoji'>🍎🍎🍎🍎 &nbsp; 🍎🍎🍎🍎 &nbsp; 🍎⬜⬜⬜</div>", 
+                hint: "Mamy 2 pełne tace. Na trzeciej tacy leży 1 jabłko, a wchodzą na nią 4. Ułamek to 1/4.", 
+                answers: ["2 1/4"] 
             },
             { 
-                text: "9. Zapisz jako <strong>liczbę mieszaną</strong>: jedno całe koło i wycinek drugiego.<br><div class='shape-container'><div class='circ filled'></div><div class='circ three-quarter'></div></div>", 
-                hint: "W drugim kole wycięto ćwiartkę, więc zostało w nim trzy czwarte (3/4).", answers: ["1 3/4"] 
+                text: "Jaka część gwiazd na nocnym niebie świeci (jest żółta)? <br><div class='visual-emoji'>⭐⭐⭐⭐⭐⭐⭐🌑🌑🌑</div>", 
+                hint: "Policz wszystkie gwiazdy (żółte i czarne) – to twój mianownik.", 
+                answers: ["7/10"] 
             },
             { 
-                text: "10. W grupie zwierząt są pieski i kotki. Jaka część zwierząt to <strong>koty</strong>? <br><div class='visual-emoji'>🐶🐶🐶🐶🐱🐱🐱</div>", 
-                hint: "Wszystkich zwierząt jest 7. Z tego 3 to koty.", answers: ["3/7"] 
+                text: "Jaka część poniższej figury jest <strong>PUSTA</strong> (biała)?<br><div class='visual-grid' style='grid-template-columns: repeat(4, auto);'><div class='grid-cell filled'></div><div class='grid-cell filled'></div><div class='grid-cell'></div><div class='grid-cell'></div></div>", 
+                hint: "Pytanie dotyczy PUSTYCH (niezamalowanych) pól, a nie żółtych!", 
+                answers: ["2/4", "1/2"] 
             },
-
-            // --- 11-20: JEDNOSTKI (TRENINGOWE) ---
+            // ZADANIA 11-20 (JEDNOSTKI)
             { 
-                text: "11. <div class='unit-badge'>1 kg = 100 dag</div><br><span class='unit-emoji'>⚖️</span> Wyraź za pomocą ułamka: <strong>45 dag — jaka to część kilograma?</strong>", 
-                hint: "Wstaw 45 do licznika, a 100 do mianownika.", answers: ["45/100", "9/20"] 
-            },
-            { 
-                text: "12. <div class='unit-badge'>1 kg = 100 dag</div><br><span class='unit-emoji'>⚖️</span> Wyraź za pomocą liczby mieszanej: <strong>3 kg 8 dag — ile to kilogramów?</strong>", 
-                hint: "To 3 całe kilogramy i 8 ze 100.", answers: ["3 8/100", "3 2/25"] 
+                text: "Wyraź za pomocą ułamka: <strong>45 dag</strong> — jaka to część kilograma?", 
+                hint: "1 kg = 100 dag", 
+                answers: ["45/100", "9/20"] 
             },
             { 
-                text: "13. <div class='unit-badge'>1 t = 1000 kg</div><br><span class='unit-emoji'>🐘</span> Wyraź za pomocą ułamka: <strong>125 kg — jaka to część tony?</strong>", 
-                hint: "Tona ma 1000 kg. Twój mianownik to 1000.", answers: ["125/1000", "1/8"] 
+                text: "Wyraź za pomocą liczby mieszanej: <strong>3 kg 8 dag</strong> — ile to kilogramów?", 
+                hint: "1 kg = 100 dag", 
+                answers: ["3 8/100", "3 2/25"] 
             },
             { 
-                text: "14. <div class='unit-badge'>1 t = 1000 kg</div><br><span class='unit-emoji'>🐘</span> Wyraź za pomocą liczby mieszanej: <strong>2 t 50 kg — ile to ton?</strong>", 
-                hint: "Dwie całe tony i 50 z 1000.", answers: ["2 50/1000", "2 5/100", "2 1/20"] 
+                text: "Wyraź za pomocą ułamka: <strong>125 kg</strong> — jaka to część tony?", 
+                hint: "1 t = 1000 kg", 
+                answers: ["125/1000", "1/8"] 
             },
             { 
-                text: "15. <span class='unit-emoji'>📅</span> Zastąp znak zapytania odpowiednim ułamkiem: <br><strong>5 dni to ? tygodnia</strong>", 
-                hint: "Cały tydzień ma 7 dni.", answers: ["5/7"] 
+                text: "Wyraź za pomocą liczby mieszanej: <strong>2 t 50 kg</strong> — ile to ton?", 
+                hint: "1 t = 1000 kg", 
+                answers: ["2 50/1000", "2 5/100", "2 1/20"] 
             },
             { 
-                text: "16. <span class='unit-emoji'>🗓️</span> Zastąp znak zapytania liczbą mieszaną: <br><strong>4 tygodnie i 3 dni to ? tygodnia</strong>", 
-                hint: "Mamy 4 całe tygodnie oraz ułamek trzech dni z siedmiu.", answers: ["4 3/7"] 
+                text: "Zastąp znak zapytania odpowiednim ułamkiem:<br><strong>5 dni</strong> to <strong>?</strong> tygodnia", 
+                hint: "1 tydzień = 7 dni", 
+                answers: ["5/7"] 
             },
             { 
-                text: "17. <span class='unit-emoji'>⏱️</span> Zastąp znak zapytania odpowiednim ułamkiem: <br><strong>23 minuty to ? godziny</strong>", 
-                hint: "Godzina to 60 minut.", answers: ["23/60"] 
+                text: "Zastąp znak zapytania liczbą mieszaną:<br><strong>4 tygodnie i 3 dni</strong> to <strong>?</strong> tygodnia", 
+                hint: "1 tydzień = 7 dni", 
+                answers: ["4 3/7"] 
             },
             { 
-                text: "18. <span class='unit-emoji'>⌚</span> Zastąp znak zapytania liczbą mieszaną: <br><strong>2 godziny i 11 minut to ? godziny</strong>", 
-                hint: "2 całe godziny i ułamek minut (mianownik 60).", answers: ["2 11/60"] 
+                text: "Zastąp znak zapytania odpowiednim ułamkiem:<br><strong>23 minuty</strong> to <strong>?</strong> godziny", 
+                hint: "1 godzina = 60 minut", 
+                answers: ["23/60"] 
             },
             { 
-                text: "19. <span class='unit-emoji'>⏳</span> Zastąp znak zapytania odpowiednim ułamkiem: <br><strong>13 godzin to ? doby</strong>", 
-                hint: "Pełna doba trwa 24 godziny.", answers: ["13/24"] 
+                text: "Zastąp znak zapytania liczbą mieszaną:<br><strong>2 godziny i 11 minut</strong> to <strong>?</strong> godziny", 
+                hint: "1 godzina = 60 minut", 
+                answers: ["2 11/60"] 
             },
             { 
-                text: "20. <span class='unit-emoji'>🌙</span> Zastąp znak zapytania liczbą mieszaną: <br><strong>1 doba i 5 godzin to ? doby</strong>", 
-                hint: "Jedna pełna doba i 5 godzin z 24.", answers: ["1 5/24"] 
+                text: "Zastąp znak zapytania odpowiednim ułamkiem:<br><strong>13 godzin</strong> to <strong>?</strong> doby", 
+                hint: "1 doba = 24 godziny", 
+                answers: ["13/24"] 
+            },
+            { 
+                text: "Zastąp znak zapytania liczbą mieszaną:<br><strong>1 doba i 5 godzin</strong> to <strong>?</strong> doby", 
+                hint: "1 doba = 24 godziny", 
+                answers: ["1 5/24"] 
             }
         ];
 
@@ -261,15 +282,17 @@
 
             container.innerHTML += `
                 <div class="task-card" id="card${taskNum}">
-                    <div class="task-text">${task.text}</div>
+                    <div class="task-text"><strong>${taskNum}.</strong> ${task.text}</div>
                     <div class="input-group">
-                        <input type="text" id="input${taskNum}" placeholder="Wpisz odp. (np. 1/2 albo 2 1/4)">
+                        <input type="text" id="input${taskNum}" placeholder="Wpisz odp.">
                         <button onclick="checkAnswer(${taskNum}, 'input${taskNum}', 'card${taskNum}', 'feedback${taskNum}', ${answersJson}, 'btn-answer${taskNum}')">Sprawdź</button>
                         <button class="btn-hint" onclick="document.getElementById('hint${taskNum}').style.display='block'">Podpowiedź</button>
+                        
                         <button class="btn-answer" id="btn-answer${taskNum}" style="display: none;" onclick="showAnswer(${taskNum}, 'input${taskNum}', '${firstAnswer}', 'card${taskNum}', 'feedback${taskNum}', 'btn-answer${taskNum}')">Odpowiedź</button>
+                        
                         <span id="feedback${taskNum}" class="feedback"></span>
                     </div>
-                    <div id="hint${taskNum}" class="hint-text">💡 ${task.hint}</div>
+                    <div id="hint${taskNum}" class="hint-text">${task.hint}</div>
                 </div>
             `;
         });
@@ -282,6 +305,7 @@
             
             cardEl.classList.remove("correct-bg", "incorrect-bg");
 
+            // Normalizacja: usuwa podwójne spacje, zamienia ew. przecinki
             let normalized = userInput.trim().toLowerCase().replace(/\s+/g, ' ').replace(',', '.');
             
             if (normalized === "") return (feedbackEl.textContent = "Wpisz odpowiedź!", feedbackEl.className = "feedback incorrect");
@@ -322,6 +346,7 @@
             document.getElementById(feedbackId).innerHTML = "Oto prawidłowa odpowiedź.";
             document.getElementById(feedbackId).className = "feedback correct";
             document.getElementById(btnAnswerId).style.display = "none";
+            
             resultsData[taskNum] = "Podglądał odpowiedź";
         }
 
@@ -329,6 +354,7 @@
             let correctCount = 0; let hintCount = 0; let notSolvedCount = 0;
             let detailedReport = "";
 
+            // Zmiana na 20 zadań
             for(let i=1; i<=20; i++) { 
                 let inputId = 'input' + i;
                 let currentInputVal = document.getElementById(inputId).value.trim();
@@ -345,7 +371,7 @@
                 }
                 else if(resultsData[i] === "Podglądał odpowiedź") {
                     hintCount++;
-                    detailedReport += `Zadanie ${i}: Podglądał odp (Błędne próby: ${wrongAttemptsString || "brak"})\n`;
+                    detailedReport += `Zadanie ${i}: Podglądał odp (Błędne próby: ${wrongAttemptsString || "brak, zrezygnował od razu"})\n`;
                 }
                 else {
                     notSolvedCount++;
@@ -357,7 +383,8 @@
                 }
             }
 
-            const finalMessage = `Uczeń: ${currentStudent}\nKlasa: ${currentClass}\n\nTEMAT: Ułamki (Wizualne + Trening Jednostek)\n\nWYNIK GŁÓWNY:\n- Rozwiązane samodzielnie: ${correctCount} z 20\n- Z użyciem gotowej odpowiedzi: ${hintCount} z 20\n- Brak odpowiedzi: ${notSolvedCount} z 20\n\nSZCZEGÓŁY:\n${detailedReport}`;
+            // Zaktualizowany komunikat na "z 20"
+            const finalMessage = `Uczeń: ${currentStudent}\nKlasa: ${currentClass}\n\nTEMAT: Ułamek jako część całości (Trening Wizualny)\n\nWYNIK GŁÓWNY:\n- Rozwiązane samodzielnie: ${correctCount} z 20\n- Z użyciem gotowej odpowiedzi: ${hintCount} z 20\n- Brak odpowiedzi: ${notSolvedCount} z 20\n\nSZCZEGÓŁY:\n${detailedReport}`;
 
             const btnSubmit = document.getElementById("btn-submit");
             btnSubmit.textContent = "Wysyłanie...";
