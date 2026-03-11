@@ -7,7 +7,9 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f8ff; 
+            /* 👇 ZMIANA: Dodano tło obrazkowe 👇 */
+            background-image: url('background2.jpg');
+            background-color: #f0f8ff; /* Kolor zapasowy */
             background-size: cover; 
             background-position: center;
             background-attachment: fixed; 
@@ -44,11 +46,11 @@
         /* 🎨 STYLE DLA RYSUNKÓW (CSS ART) */
         .visual-grid { display: inline-grid; gap: 2px; margin: 10px 0; border: 2px solid #333; padding: 2px; background: #333;}
         .grid-cell { background: #fff; width: 40px; height: 40px; }
-        .grid-cell.filled { background: #f1c40f; } 
+        .grid-cell.filled { background: #f1c40f; } /* Żółty kwadrat */
         
         .choco-grid { display: inline-grid; gap: 2px; margin: 10px 0; border: 2px solid #5d4037; padding: 2px; background: #5d4037; border-radius: 4px;}
         .choco-cell { background: #795548; width: 40px; height: 40px; border-radius: 2px; box-shadow: inset 0 0 5px rgba(0,0,0,0.3); }
-        .choco-eaten { background: #f0f8ff; width: 40px; height: 40px; } 
+        .choco-eaten { background: #f0f8ff; width: 40px; height: 40px; } /* Puste miejsce po czekoladzie */
 
         .visual-emoji { font-size: 2.5em; margin: 10px 0; letter-spacing: 5px; }
 
@@ -56,11 +58,11 @@
         
         /* Koła (Pizze) ułamkowe */
         .circ { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #333; background: #fff; position: relative; overflow: hidden; }
-        .circ.filled { background: #e67e22; } 
-        .circ.half::after { content: ''; position: absolute; left: 0; top: 0; width: 50%; height: 100%; background: #e67e22; } 
-        .circ.quarter::after { content: ''; position: absolute; left: 0; top: 0; width: 50%; height: 50%; background: #e67e22; } 
+        .circ.filled { background: #e67e22; } /* Całe koło */
+        .circ.half::after { content: ''; position: absolute; left: 0; top: 0; width: 50%; height: 100%; background: #e67e22; } /* Pół koła */
+        .circ.quarter::after { content: ''; position: absolute; left: 0; top: 0; width: 50%; height: 50%; background: #e67e22; } /* Ćwierć koła */
         .circ.three-quarter { background: #e67e22; }
-        .circ.three-quarter::after { content: ''; position: absolute; right: 0; bottom: 0; width: 50%; height: 50%; background: #fff; border-top: 2px solid #333; border-left: 2px solid #333;} 
+        .circ.three-quarter::after { content: ''; position: absolute; right: 0; bottom: 0; width: 50%; height: 50%; background: #fff; border-top: 2px solid #333; border-left: 2px solid #333;} /* Trzy czwarte */
         
         /* Bateria */
         .battery { width: 150px; height: 40px; border: 3px solid #333; border-radius: 5px; padding: 3px; display: flex; gap: 3px; position: relative; margin: 10px 0;}
@@ -166,7 +168,7 @@
             document.getElementById("app-content").style.display = "block";
         }
 
-        // BAZA 20 ZADAŃ (1-10 wizualne, 11-20 jednostki)
+        // BAZA 20 ZADAŃ
         const tasksData = [
             { 
                 text: "Tabliczka czekolady ma 8 kostek. Jaka część czekolady <strong>została zjedzona</strong> (puste miejsca)?<br><div class='choco-grid' style='grid-template-columns: repeat(4, auto);'><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-eaten'></div><div class='choco-cell'></div><div class='choco-cell'></div><div class='choco-eaten'></div><div class='choco-eaten'></div></div>", 
@@ -218,7 +220,6 @@
                 hint: "Pytanie dotyczy PUSTYCH (niezamalowanych) pól, a nie żółtych!", 
                 answers: ["2/4", "1/2"] 
             },
-            // ZADANIA 11-20 (JEDNOSTKI)
             { 
                 text: "Wyraź za pomocą ułamka: <strong>45 dag</strong> — jaka to część kilograma?", 
                 hint: "1 kg = 100 dag", 
@@ -280,11 +281,15 @@
             const answersJson = JSON.stringify(task.answers).replace(/"/g, "'");
             const firstAnswer = task.answers[0];
 
+            // 👇 ZMIANA: Logika inteligentnego placeholder 👇
+            // Sprawdza, czy pierwsza poprawna odpowiedź ma spację (liczba mieszana)
+            let placeholderText = firstAnswer.includes(' ') ? "np. 1 1/2" : "np. 3/4";
+
             container.innerHTML += `
                 <div class="task-card" id="card${taskNum}">
                     <div class="task-text"><strong>${taskNum}.</strong> ${task.text}</div>
                     <div class="input-group">
-                        <input type="text" id="input${taskNum}" placeholder="Wpisz odp.">
+                        <input type="text" id="input${taskNum}" placeholder="${placeholderText}">
                         <button onclick="checkAnswer(${taskNum}, 'input${taskNum}', 'card${taskNum}', 'feedback${taskNum}', ${answersJson}, 'btn-answer${taskNum}')">Sprawdź</button>
                         <button class="btn-hint" onclick="document.getElementById('hint${taskNum}').style.display='block'">Podpowiedź</button>
                         
@@ -354,7 +359,7 @@
             let correctCount = 0; let hintCount = 0; let notSolvedCount = 0;
             let detailedReport = "";
 
-            // Zmiana na 20 zadań
+            // Pętla ustawiona na 20 zadań
             for(let i=1; i<=20; i++) { 
                 let inputId = 'input' + i;
                 let currentInputVal = document.getElementById(inputId).value.trim();
@@ -383,7 +388,6 @@
                 }
             }
 
-            // Zaktualizowany komunikat na "z 20"
             const finalMessage = `Uczeń: ${currentStudent}\nKlasa: ${currentClass}\n\nTEMAT: Ułamek jako część całości (Trening Wizualny)\n\nWYNIK GŁÓWNY:\n- Rozwiązane samodzielnie: ${correctCount} z 20\n- Z użyciem gotowej odpowiedzi: ${hintCount} z 20\n- Brak odpowiedzi: ${notSolvedCount} z 20\n\nSZCZEGÓŁY:\n${detailedReport}`;
 
             const btnSubmit = document.getElementById("btn-submit");
@@ -395,7 +399,7 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({
-                    access_key: "99356b6c-ab77-4ea0-a3cb-99560d40fafa",
+                    access_key: "99356b6c-ab77-4ea0-a3cb-99560d40fafa", // Klucz Web3Forms
                     subject: `Wyniki Ułamki: ${currentStudent} (${currentClass})`,
                     from_name: "Trenażer Matematyczny",
                     message: finalMessage
